@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>British Airways Customer Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3e577d 0%, #327acb 50%, #327acb 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quiz-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .quiz-card.active {
+            display: block;
+        }
+
+        .question-number {
+            color: #327acb;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #3e577d;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #327acb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(50, 122, 203, 0.2);
+        }
+
+        .option.selected {
+            background: #327acb;
+            border-color: #3e577d;
+            color: white;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: #327acb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #3e577d;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #327acb, #3e577d);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .results {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .result-type {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3e577d;
+            margin-bottom: 20px;
+        }
+
+        .result-description {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #475569;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .result-highlight {
+            background: #e3f2fd;
+            border-left: 4px solid #327acb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .restart-btn {
+            background: #f64937;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            background: #d32f2f;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .question-text {
+                font-size: 20px;
+            }
+            
+            .option {
+                padding: 15px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Quiz Questions -->
+        <div class="quiz-card active" id="question1">
+            <div class="question-number">Question 1 of 10</div>
+            <div class="question-text">How often do you travel for leisure each year?</div>
+            <div class="options">
+                <div class="option" data-answer="A">2-3 times, prioritising luxury and relaxation</div>
+                <div class="option" data-answer="B">Several times, exploring both typical and unique destinations</div>
+                <div class="option" data-answer="C">I spend time planning a big holiday, often to fit into my busy schedule and social calendar</div>
+                <div class="option" data-answer="D">When I find great deals, usually for sunny, relaxing destinations</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" disabled>Previous</button>
+                <button class="btn" id="nextBtn1" disabled onclick="nextQuestion(1)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question2">
+            <div class="question-number">Question 2 of 10</div>
+            <div class="question-text">How do you prefer to get travel inspiration?</div>
+            <div class="options">
+                <div class="option" data-answer="A">Recommendations from friends, travel blogs, and TripAdvisor</div>
+                <div class="option" data-answer="B">Reliable, upmarket sources like Conde Nast Traveller and National Geographic</div>
+                <div class="option" data-answer="C">Personal exploration and content from real travellers</div>
+                <div class="option" data-answer="D">Family, friends, and social media</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(2)">Previous</button>
+                <button class="btn" id="nextBtn2" disabled onclick="nextQuestion(2)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question3">
+            <div class="question-number">Question 3 of 10</div>
+            <div class="question-text">What do you prioritise in your travel booking process?</div>
+            <div class="options">
+                <div class="option" data-answer="A">Quick, easy decisions with core destination and flight info</div>
+                <div class="option" data-answer="B">Efficient booking with the possibility of cabin upgrades</div>
+                <div class="option" data-answer="C">Consider a variety of options to ensure the best decision</div>
+                <div class="option" data-answer="D">Best value for money</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(3)">Previous</button>
+                <button class="btn" id="nextBtn3" disabled onclick="nextQuestion(3)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question4">
+            <div class="question-number">Question 4 of 10</div>
+            <div class="question-text">Are you a member of The British Airways Club?</div>
+            <div class="options">
+                <div class="option" data-answer="B">I'm Gold/Silver and proud!</div>
+                <div class="option" data-answer="A">I've been a Blue/Bronze member for a while</div>
+                <div class="option" data-answer="C">I just joined</div>
+                <div class="option" data-answer="D">I am not a member</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(4)">Previous</button>
+                <button class="btn" id="nextBtn4" disabled onclick="nextQuestion(4)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question5">
+            <div class="question-number">Question 5 of 10</div>
+            <div class="question-text">How would you usually travel (outside of staff travel perks)?</div>
+            <div class="options">
+                <div class="option" data-answer="B">Mixture</div>
+                <div class="option" data-answer="A">Short Haul majority of time but with 1 Long Haul flight a year</div>
+                <div class="option" data-answer="B">Always Long Haul</div>
+                <div class="option" data-answer="D">Always Short Haul</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(5)">Previous</button>
+                <button class="btn" id="nextBtn5" disabled onclick="nextQuestion(5)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question6">
+            <div class="question-number">Question 6 of 10</div>
+            <div class="question-text">What is your ideal airport experience?</div>
+            <div class="options">
+                <div class="option" data-answer="A">Fast check-in and boarding for business efficiency</div>
+                <div class="option" data-answer="B">Lounge with champagne</div>
+                <div class="option" data-answer="D">Browsing duty-free and grabbing snacks</div>
+                <div class="option" data-answer="C">Finding the nearest adventure gear or book shop</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(6)">Previous</button>
+                <button class="btn" id="nextBtn6" disabled onclick="nextQuestion(6)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question7">
+            <div class="question-number">Question 7 of 10</div>
+            <div class="question-text">What are your travel needs?</div>
+            <div class="options">
+                <div class="option" data-answer="A">Luxury travel and maximise convenience</div>
+                <div class="option" data-answer="B">Dependable and premium</div>
+                <div class="option" data-answer="C">Flexible and value-driven</div>
+                <div class="option" data-answer="D">Affordable and hassle free</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(7)">Previous</button>
+                <button class="btn" id="nextBtn7" disabled onclick="nextQuestion(7)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question8">
+            <div class="question-number">Question 8 of 10</div>
+            <div class="question-text">Who do you usually travel with?</div>
+            <div class="options">
+                <div class="option" data-answer="A">I usually travel solo</div>
+                <div class="option" data-answer="B">With my partner</div>
+                <div class="option" data-answer="C">Solo or with family</div>
+                <div class="option" data-answer="D">Solo or with friends</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(8)">Previous</button>
+                <button class="btn" id="nextBtn8" disabled onclick="nextQuestion(8)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question9">
+            <div class="question-number">Question 9 of 10</div>
+            <div class="question-text">What is your preferred drink onboard?</div>
+            <div class="options">
+                <div class="option" data-answer="A">A Glass of Champagne</div>
+                <div class="option" data-answer="B">A Whiskey Sour</div>
+                <div class="option" data-answer="D">An Aperol Spritz</div>
+                <div class="option" data-answer="C">A Frozen Margarita</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(9)">Previous</button>
+                <button class="btn" id="nextBtn9" disabled onclick="nextQuestion(9)">Next</button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="question10">
+            <div class="question-number">Question 10 of 10</div>
+            <div class="question-text">What is your essential item when travelling?</div>
+            <div class="options">
+                <div class="option" data-answer="A">A laptop</div>
+                <div class="option" data-answer="C">A camera</div>
+                <div class="option" data-answer="C">Copies of Travel Insurance</div>
+                <div class="option" data-answer="D">Stylish Sunglasses</div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="previousQuestion(10)">Previous</button>
+                <button class="btn" id="nextBtn10" disabled onclick="showResults()">See Results</button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="quiz-card" id="results">
+            <div class="results">
+                <div id="resultContent"></div>
+                <button class="btn restart-btn" onclick="restartQuiz()">Take Quiz Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let answers = {};
+        let currentQuestion = 1;
+        const totalQuestions = 10;
+
+        const customerTypes = {
+            A: {
+                title: "Type A: The Efficiency Expert",
+                subtitle: "You prioritise luxury, convenience, and relaxation in your travels",
+                description: `You are a confident, driven professional who thrives on success. You are likely to live in London and love the access it gives you to culture, events, and great transport links. You are tech-savvy and throw yourself fully into new hobbies. You have strong friendships with a dose of friendly rivalry.
+
+Travel has always been part of your life, often flying on your own or with your partner. You are loyal to British Airways, fly often enough to maintain your The British Airways Club status, and prefer Heathrow (although London City is a handy alternative). You value convenience, personal experiences, and trust recommendations from colleagues when planning your next trip.`,
+                makeADifference: "What makes a difference: Seamless experiences, time-saving services, premium amenities, and personalized attention that recognizes their status and frequent travel."
+            },
+            B: {
+                title: "Type B: The Premium Experience Seeker",
+                subtitle: "You love comfort and luxury and the journey is as memorable as the destination",
+                description: `You are established, successful and finding the balance between ambition and family. Whether it's sailing, skiing, or social events like Royal Ascot, you live life to the fullest and value tradition, comfort, and unforgettable experiences. Travel is central to your lifestyle, always in First, Business, or Premium Economy, and you remain fiercely loyal to British Airways. You see flying BA as part of the luxury, not just the journey.
+
+You are likely living in the Southeast area of London. You appreciate quality service and personalised touches. You travel frequently with family or your partner and enjoy sharing your experience and you expect excellence every time you fly!`,
+                makeADifference: "What makes a difference: Exceptional service quality, attention to detail, premium cabin experiences, and the prestige of flying with British Airways' heritage and tradition."
+            },
+            C: {
+                title: "Type C: The Thoughtful Planner",
+                subtitle: "Your trips are often tied to social events, with a focus on ease of planning and booking",
+                description: `You are a planner through and through - detail-oriented, organised, and always thinking ahead. Whether it's social sports with friends or theme park days out, you like structure with a side of fun. Right now, you're focused on big life milestones.
+
+Travel is something you carefully plan and budget for. Outside of staff travel, you occasionally fly with British Airways, mostly for meaningful events. You appreciate immersive, active holidays like hiking and camping, where you can really connect with nature and culture. Your holidays are intentional, well thought out, and booked with purpose.`,
+                makeADifference: "What makes a difference: Clear information, reliable service, flexible booking options, and feeling confident that their carefully planned trips will go smoothly."
+            },
+            D: {
+                title: "Type D: The Social Explorer",
+                subtitle: "You seek sunny, relaxing destinations at the best value, often influenced by social media and friends",
+                description: `You are a social butterfly with a calendar that is always buzzing - whether it's nights out, theme parks, or planning your next holiday. You live for experiences and make sure you squeeze the most out of every day, from gym sessions to fun outings with friends and family.
+
+Holidays are a big deal for you, and there is always one on the horizon. You love combining romance, adventure, and a little shopping. You mostly stick to short-haul trips across Europe, flying from Heathrow or Gatwick, occasionally flying with BA when it suits. You are savvy, price-conscious, and trend-aware - always hunting down great value without compromising on fun.`,
+                makeADifference: "What makes a difference: Great value for money, friendly service, social media-worthy experiences, and feeling like they're getting more than they paid for."
+            }
+        };
+
+        function selectOption(questionNum, option) {
+            // Remove previous selection
+            const options = document.querySelectorAll(`#question${questionNum} .option`);
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selection to clicked option
+            option.classList.add('selected');
+            
+            // Store answer
+            answers[questionNum] = option.dataset.answer;
+            
+            // Enable next button
+            document.getElementById(`nextBtn${questionNum}`).disabled = false;
+        }
+
+        function nextQuestion(current) {
+            if (current < totalQuestions) {
+                document.getElementById(`question${current}`).classList.remove('active');
+                document.getElementById(`question${current + 1}`).classList.add('active');
+                currentQuestion = current + 1;
+                updateProgressBar();
+            }
+        }
+
+        function previousQuestion(current) {
+            if (current > 1) {
+                document.getElementById(`question${current}`).classList.remove('active');
+                document.getElementById(`question${current - 1}`).classList.add('active');
+                currentQuestion = current - 1;
+                updateProgressBar();
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestion - 1) / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            
+            for (let answer of Object.values(answers)) {
+                counts[answer]++;
+            }
+            
+            // Find the type with most answers
+            let maxCount = 0;
+            let resultType = 'A';
+            
+            for (let type in counts) {
+                if (counts[type] > maxCount) {
+                    maxCount = counts[type];
+                    resultType = type;
+                }
+            }
+            
+            return resultType;
+        }
+
+        function showResults() {
+            const resultType = calculateResult();
+            const result = customerTypes[resultType];
+            
+            document.getElementById(`question${totalQuestions}`).classList.remove('active');
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('resultContent').innerHTML = `
+                <div class="result-type">${result.title}</div>
+                <div style="font-size: 20px; color: #327acb; margin-bottom: 25px; font-weight: 600;">${result.subtitle}</div>
+                <div class="result-description">${result.description.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</div>
+                <div class="result-highlight">
+                    <strong style="color: #3e577d;">${result.makeADifference}</strong>
+                </div>
+            `;
+            
+            updateProgressBar();
+            document.getElementById('progressFill').style.width = '100%';
+        }
+
+        function restartQuiz() {
+            answers = {};
+            currentQuestion = 1;
+            
+            // Hide all cards
+            document.querySelectorAll('.quiz-card').forEach(card => card.classList.remove('active'));
+            
+            // Show first question
+            document.getElementById('question1').classList.add('active');
+            
+            // Reset all selections
+            document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+            
+            // Disable all next buttons
+            for (let i = 1; i <= totalQuestions; i++) {
+                const btn = document.getElementById(`nextBtn${i}`);
+                if (btn) btn.disabled = true;
+            }
+            
+            updateProgressBar();
+        }
+
+        // Add click handlers to all options
+        document.addEventListener('DOMContentLoaded', function() {
+            for (let i = 1; i <= totalQuestions; i++) {
+                const options = document.querySelectorAll(`#question${i} .option`);
+                options.forEach(option => {
+                    option.addEventListener('click', function() {
+                        selectOption(i, this);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
