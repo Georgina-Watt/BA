@@ -30,6 +30,60 @@
             justify-content: center;
         }
 
+        .intro-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ba-logo {
+            width: 200px;
+            height: 60px;
+            background: #3e577d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #3e577d;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .intro-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+            text-align: left;
+        }
+
+        .start-btn {
+            background: #327acb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+        }
+
+        .start-btn:hover {
+            background: #3e577d;
+            transform: translateY(-2px);
+        }
+
         .quiz-card {
             background: white;
             padding: 30px;
@@ -180,6 +234,10 @@
                 padding: 15px;
             }
             
+            h1 {
+                font-size: 24px;
+            }
+            
             .question-text {
                 font-size: 20px;
             }
@@ -193,17 +251,29 @@
 </head>
 <body>
     <div class="container">
-        <div class="progress-bar">
+        <!-- Introduction -->
+        <div class="intro-card" id="introCard">
+            <div class="ba-logo">DISCOVER YOUR CUSTOMER TYPE</div>
+            <h1>Travel Personality Quiz</h1>
+            <div class="intro-text">
+                <p>This summer, millions of customers are looking forward to flying with British Airways and we all have a part to play to make their journey special. But our customers are as original as you and prioritise different things. These personas are what our marketing teams use to target different customers and make a difference to how they travel.</p>
+                <br>
+                <p>Have you ever wondered what travel persona you are? Well, take the quiz below and find out.</p>
+            </div>
+            <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <div class="progress-bar" id="progressContainer" style="display: none;">
             <div class="progress-fill" id="progressFill"></div>
         </div>
 
         <!-- Quiz Questions -->
-        <div class="quiz-card active" id="question1">
+        <div class="quiz-card" id="question1">
             <div class="question-number">Question 1 of 10</div>
             <div class="question-text">How often do you travel for leisure each year?</div>
             <div class="options">
                 <div class="option" data-answer="A">2-3 times, prioritising luxury and relaxation</div>
-                <div class="option" data-answer="B">Several times, exploring both typical and unique destinations</div>
+                <div class="option" data-answer="B">Several times, I have explored both typical and unique destinations</div>
                 <div class="option" data-answer="C">I spend time planning a big holiday, often to fit into my busy schedule and social calendar</div>
                 <div class="option" data-answer="D">When I find great deals, usually for sunny, relaxing destinations</div>
             </div>
@@ -215,10 +285,10 @@
 
         <div class="quiz-card" id="question2">
             <div class="question-number">Question 2 of 10</div>
-            <div class="question-text">How do you prefer to get travel inspiration?</div>
+            <div class="question-text">Where do you go for travel inspiration?</div>
             <div class="options">
                 <div class="option" data-answer="A">Recommendations from friends, travel blogs, and TripAdvisor</div>
-                <div class="option" data-answer="B">Reliable, upmarket sources like Conde Nast Traveller and National Geographic</div>
+                <div class="option" data-answer="B">Reliable, upmarket sources such as Condé Nast Traveller and National Geographic</div>
                 <div class="option" data-answer="C">Personal exploration and content from real travellers</div>
                 <div class="option" data-answer="D">Family, friends, and social media</div>
             </div>
@@ -263,9 +333,9 @@
             <div class="question-text">How would you usually travel (outside of staff travel perks)?</div>
             <div class="options">
                 <div class="option" data-answer="B">Mixture</div>
-                <div class="option" data-answer="A">Short Haul majority of time but with 1 Long Haul flight a year</div>
-                <div class="option" data-answer="B">Always Long Haul</div>
-                <div class="option" data-answer="D">Always Short Haul</div>
+                <div class="option" data-answer="A">Short-haul majority of time, but with 1 long-haul flight a year</div>
+                <div class="option" data-answer="B">Always long-haul</div>
+                <div class="option" data-answer="D">Always short-haul</div>
             </div>
             <div class="navigation">
                 <button class="btn btn-secondary" onclick="previousQuestion(5)">Previous</button>
@@ -275,12 +345,12 @@
 
         <div class="quiz-card" id="question6">
             <div class="question-number">Question 6 of 10</div>
-            <div class="question-text">What is your ideal airport experience?</div>
+            <div class="question-text">What do you look forward to most as part of your airport experience?</div>
             <div class="options">
-                <div class="option" data-answer="A">Fast check-in and boarding for business efficiency</div>
-                <div class="option" data-answer="B">Lounge with champagne</div>
-                <div class="option" data-answer="D">Browsing duty-free and grabbing snacks</div>
-                <div class="option" data-answer="C">Finding the nearest adventure gear or book shop</div>
+                <div class="option" data-answer="A">Fast check-in and efficient boarding</div>
+                <div class="option" data-answer="B">Lounge with chilled champagne</div>
+                <div class="option" data-answer="C">Browsing duty-free and grabbing snacks</div>
+                <div class="option" data-answer="D">Finding the nearest adventure gear or book shop</div>
             </div>
             <div class="navigation">
                 <button class="btn btn-secondary" onclick="previousQuestion(6)">Previous</button>
@@ -290,12 +360,12 @@
 
         <div class="quiz-card" id="question7">
             <div class="question-number">Question 7 of 10</div>
-            <div class="question-text">What are your travel needs?</div>
+            <div class="question-text">What do you prioritise when travelling?</div>
             <div class="options">
                 <div class="option" data-answer="A">Luxury travel and maximise convenience</div>
                 <div class="option" data-answer="B">Dependable and premium</div>
                 <div class="option" data-answer="C">Flexible and value-driven</div>
-                <div class="option" data-answer="D">Affordable and hassle free</div>
+                <div class="option" data-answer="D">Affordable, I love the best deal!</div>
             </div>
             <div class="navigation">
                 <button class="btn btn-secondary" onclick="previousQuestion(7)">Previous</button>
@@ -323,9 +393,9 @@
             <div class="question-text">What is your preferred drink onboard?</div>
             <div class="options">
                 <div class="option" data-answer="A">A Glass of Champagne</div>
-                <div class="option" data-answer="B">A Whiskey Sour</div>
-                <div class="option" data-answer="D">An Aperol Spritz</div>
-                <div class="option" data-answer="C">A Frozen Margarita</div>
+                <div class="option" data-answer="B">Aperol Spritz</div>
+                <div class="option" data-answer="C">Coffee all the way!</div>
+                <div class="option" data-answer="D">Diet coke</div>
             </div>
             <div class="navigation">
                 <button class="btn btn-secondary" onclick="previousQuestion(9)">Previous</button>
@@ -396,6 +466,13 @@ Holidays are a big deal for you, and there is always one on the horizon. You lov
                 makeADifference: "What makes a difference: Great value for money, friendly service, social media-worthy experiences, and feeling like they're getting more than they paid for."
             }
         };
+
+        function startQuiz() {
+            document.getElementById('introCard').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('question1').classList.add('active');
+            updateProgressBar();
+        }
 
         function selectOption(questionNum, option) {
             // Remove previous selection
@@ -483,8 +560,9 @@ Holidays are a big deal for you, and there is always one on the horizon. You lov
             // Hide all cards
             document.querySelectorAll('.quiz-card').forEach(card => card.classList.remove('active'));
             
-            // Show first question
-            document.getElementById('question1').classList.add('active');
+            // Show intro
+            document.getElementById('introCard').style.display = 'block';
+            document.getElementById('progressContainer').style.display = 'none';
             
             // Reset all selections
             document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
