@@ -220,6 +220,39 @@
             border-radius: 0 10px 10px 0;
         }
 
+        .thank-you-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .thank-you-section h3 {
+            color: #3e577d;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .thank-you-section p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .contact-email {
+            color: #327acb;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .contact-email:hover {
+            color: #3e577d;
+            text-decoration: underline;
+        }
+
         .restart-btn {
             background: #f64937;
             margin-top: 20px;
@@ -422,6 +455,13 @@
         <div class="quiz-card" id="results">
             <div class="results">
                 <div id="resultContent"></div>
+                
+                <div class="thank-you-section">
+                    <h3>Thanks for taking the quiz. We hope you enjoyed it!</h3>
+                    <p>To find out more about our UK customer personas or how we can work with you to embed these into the heart of everything you do, get in touch to find out more:</p>
+                    <a href="mailto:audiencepersonas@ba.com" class="contact-email">audiencepersonas@ba.com</a>
+                </div>
+                
                 <button class="btn restart-btn" onclick="restartQuiz()">Take Quiz Again</button>
             </div>
         </div>
